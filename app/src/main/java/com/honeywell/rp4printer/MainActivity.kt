@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         
         // Inicializa os gerenciadores
         bluetoothManager = BluetoothManager(this)
-        printerManager = PrinterManager(bluetoothManager)  // Usa BluetoothManager diretamente
+        printerManager = PrinterManager(bluetoothManager, this)  // Passa context para ler assets
         
         signatureView = findViewById(R.id.signatureView)
         
@@ -58,6 +58,12 @@ class MainActivity : AppCompatActivity() {
         
         findViewById<android.widget.Button>(R.id.btnPrint).setOnClickListener {
             printSignature()
+        }
+        
+        // Botão de TESTE PRN (longo clique no botão de impressão)
+        findViewById<android.widget.Button>(R.id.btnPrint).setOnLongClickListener {
+            testPrnFile()
+            true
         }
     }
 
@@ -132,6 +138,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * TESTE: Imprime o arquivo exemplo.prn do BarTender
+     * Segure o botão "Imprimir" por 2 segundos para testar
+     */
+    private fun testPrnFile() {
+        if (!bluetoothManager.isConnected()) {
+            Toast.makeText(this, "Conecte à impressora primeiro!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        lifecycleScope.launch {
+            Toast.makeText(
+                this@MainActivity, 
+                "🧪 TESTE: Imprimindo exemplo.prn...", 
+                Toast.LENGTH_SHORT
+            ).show()
+            
+            val result = printerManager.printPrnExample()
+            
+            if (result.isSuccess) {
+                Toast.makeText(
+                    this@MainActivity, 
+                    "✓ Arquivo PRN enviado!\nVerifique se imprimiu corretamente.", 
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                val errorMsg = result.exceptionOrNull()?.message ?: "Erro desconhecido"
+                Toast.makeText(
+                    this@MainActivity, 
+                    "✗ Erro ao enviar PRN: $errorMsg", 
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    /**
      * Imprime a assinatura capturada
      */
     private fun printSignature() {
@@ -148,14 +190,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            Toast.makeText(this@MainActivity, "Imprimindo...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "Imprimindo assinatura...", Toast.LENGTH_SHORT).show()
             
-            val result = printerManager.printSignature(signature, "ASSINATURA DIGITAL")
+            // V9.0: DPL PURO - Finalmente correto!
+            val result = printerManager.printSignatureDPL(signature)
             
             if (result.isSuccess) {
                 Toast.makeText(
                     this@MainActivity, 
-                    "✓ Assinatura impressa com sucesso!", 
+                    "✓ Assinatura impressa com DPL!", 
                     Toast.LENGTH_LONG
                 ).show()
                 // Opcionalmente, limpar a assinatura após imprimir
