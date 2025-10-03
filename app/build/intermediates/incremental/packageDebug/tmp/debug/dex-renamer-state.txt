@@ -1,0 +1,22 @@
+#Thu Oct 02 14:09:04 BRT 2025
+base.0=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.2=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeProjectDexDebug/5/classes.dex
+base.3=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeProjectDexDebug/7/classes.dex
+base.4=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeProjectDexDebug/8/classes.dex
+base.5=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeProjectDexDebug/9/classes.dex
+base.6=/Users/amelo/Downloads/drive-download-20250929T200435Z-1-001/Honeywell_MobilitySDK_Android_v1.00.00.0188/Honeywell_MobilitySDK_Android_v1.00.00.0188/honeywell-android-printing-sdk/samples/RP4PrinterKotlin/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+path.0=classes.dex
+path.1=0/classes.dex
+path.2=5/classes.dex
+path.3=7/classes.dex
+path.4=8/classes.dex
+path.5=9/classes.dex
+path.6=classes2.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex
+renamed.2=classes3.dex
+renamed.3=classes4.dex
+renamed.4=classes5.dex
+renamed.5=classes6.dex
+renamed.6=classes7.dex

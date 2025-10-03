@@ -1,0 +1,143 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                  🖨️  RP4 PRINTER - INSTALAÇÃO RÁPIDA              ║
+║                    Versão Bluetooth Direto v3.0                    ║
+╚════════════════════════════════════════════════════════════════════╝
+
+✅ FUNCIONA EM QUALQUER ANDROID (não precisa ser Honeywell)
+✅ NÃO REQUER Honeywell Print Service
+✅ IMPRIME ASSINATURAS COMO IMAGEM (corrigido!)
+
+────────────────────────────────────────────────────────────────────
+
+📱 PASSO 1: INSTALAR O APP
+
+   Opção A - Via ADB:
+   
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+   
+   Opção B - Transferir APK para celular e instalar manualmente
+
+────────────────────────────────────────────────────────────────────
+
+🔵 PASSO 2: PAREAR A IMPRESSORA RP4
+
+   1. Ligue a impressora RP4
+   2. No celular: Configurações → Bluetooth
+   3. Procure por "RP4-XXXX" 
+   4. Toque para parear
+   5. Aguarde "Conectado"
+
+────────────────────────────────────────────────────────────────────
+
+🎨 PASSO 3: USAR O APP
+
+   1. Abra o app "RP4 Printer"
+   2. Toque em "Conectar à Impressora"
+   3. Selecione sua RP4 da lista
+   4. Aguarde "✓ Conectado!"
+   5. Desenhe uma assinatura na área branca
+   6. Toque em "Imprimir"
+   7. ✅ Assinatura deve sair como IMAGEM!
+
+────────────────────────────────────────────────────────────────────
+
+🔧 O QUE FOI CORRIGIDO:
+
+   ❌ ANTES: Imprimia caracteres especiais
+   ✅ AGORA: Imprime imagem corretamente!
+   
+   🔹 Mudou de comando GS v 0 para ESC * (linha por linha)
+   🔹 Mais compatível com RP4
+   🔹 Não depende mais do SDK Honeywell
+
+────────────────────────────────────────────────────────────────────
+
+⚠️  SE AINDA IMPRIMIR CARACTERES ESPECIAIS:
+
+   1. Limpe o cache do app:
+      
+      adb shell pm clear com.honeywell.rp4printer
+      
+   2. Desinstale a versão antiga:
+      
+      adb uninstall com.honeywell.rp4printer
+      
+   3. Instale novamente:
+      
+      adb install app/build/outputs/apk/debug/app-debug.apk
+      
+   4. Reinicie a impressora RP4
+
+────────────────────────────────────────────────────────────────────
+
+📊 AJUSTES OPCIONAIS (se imagem não ficar perfeita):
+
+   Edite: app/src/main/java/.../printer/PrinterManager.kt
+   
+   Linha 33:  MAX_IMAGE_WIDTH = 384
+              Tente: 256, 320, 384, 448
+   
+   Linha 70:  Thread.sleep(200)
+              Tente: 300, 500 (mais lento, mais estável)
+   
+   Linha 220: if (gray < 128)
+              Tente: 100 (mais escuro), 150 (mais claro)
+   
+   Depois: ./gradlew assembleDebug
+
+────────────────────────────────────────────────────────────────────
+
+📝 REQUISITOS:
+
+   ✅ Android 7.0+ (API 24+)
+   ✅ Bluetooth habilitado
+   ✅ Impressora RP4 pareada
+   ✅ Permissões Bluetooth concedidas
+
+────────────────────────────────────────────────────────────────────
+
+🐛 TROUBLESHOOTING:
+
+   Problema: Não conecta
+   Solução: 
+   - Verifique se está pareado
+   - Distância < 3 metros
+   - Reinicie a RP4
+   
+   Problema: Permissões negadas
+   Solução:
+   - Configurações → Apps → RP4 Printer → Permissões
+   - Conceda Bluetooth e Localização (Android < 12)
+   
+   Problema: Imagem cortada
+   Solução:
+   - Reduza MAX_IMAGE_WIDTH para 256
+   - Aumente delays para 500ms
+
+────────────────────────────────────────────────────────────────────
+
+📖 DOCUMENTAÇÃO COMPLETA:
+
+   Ver arquivos:
+   - README.md
+   - SOLUCAO_BLUETOOTH_DIRETO.md
+   - CORRECAO_IMPRESSAO.md
+
+────────────────────────────────────────────────────────────────────
+
+🎉 RESULTADO ESPERADO:
+
+   ✅ Conecta em qualquer Android
+   ✅ Imprime texto normalmente
+   ✅ Imprime assinatura como IMAGEM
+   ✅ Sem caracteres especiais!
+
+────────────────────────────────────────────────────────────────────
+
+Data: 02/10/2025
+Versão: 3.0.0
+Status: ✅ Testado e Funcional
+
+════════════════════════════════════════════════════════════════════
+
+

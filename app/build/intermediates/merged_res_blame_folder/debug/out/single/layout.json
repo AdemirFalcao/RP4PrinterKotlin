@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/amelo/.gradle/daemon/8.5/com.honeywell.rp4printer.app-mergeDebugResources-56:/layout/activity_main.xml",
+        "source": "/Users/amelo/.gradle/daemon/8.5/com.honeywell.rp4printer.app-main-59:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.honeywell.rp4printer.app-mergeDebugResources-56:/layout/activity_main.xml",
+        "source": "com.honeywell.rp4printer.app-main-59:/layout/activity_main.xml"
+    }
+]
