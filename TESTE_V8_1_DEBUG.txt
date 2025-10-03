@@ -1,0 +1,89 @@
+╔═══════════════════════════════════════════════════════════╗
+║          🔧 V8.1 - DEBUG E CORREÇÃO                      ║
+║         TESTE: Remontagem do PRN Original                ║
+╚═══════════════════════════════════════════════════════════╝
+
+❌ O QUE ACONTECEU NA V8.0:
+────────────────────────────────────────────────────────────
+PRN final: 134 bytes (deveria ser 6814 bytes)
+Imagem: 104x4 pixels (MUITO pequeno!)
+Resultado: Impressora não imprimiu nada
+
+CAUSA: Leitura incorreta das dimensões do header
+
+
+✅ O QUE MUDOU NA V8.1:
+────────────────────────────────────────────────────────────
+1. Localiza ICRgfx0 DINAMICAMENTE
+2. Pega TODOS os dados até \r\n\x02L
+3. TESTE: Remonta o PRN original (sem modificar)
+
+Se funcionar → Lógica está correta
+Se não funcionar → Problema na separação dos blocos
+
+
+🧪 TESTE AGORA:
+────────────────────────────────────────────────────────────
+1. Instalar:
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+
+2. Abrir app → Conectar RP4
+
+3. Desenhar qualquer coisa
+
+4. Clicar "Imprimir" (clique NORMAL)
+
+
+✅ RESULTADO ESPERADO:
+────────────────────────────────────────────────────────────
+Deve imprimir a IMAGEM DO TEMPLATE ORIGINAL
+(a mesma do long press)
+
+Por quê? Porque estou enviando o PRN ORIGINAL
+remontado (header + imagem original + footer)
+
+
+📊 LOGS ESPERADOS:
+────────────────────────────────────────────────────────────
+=== TEMPLATE V8.1: Início ===
+Template original: 6814 bytes
+ICRgfx0 encontrado na posição: 37
+Footer encontrado na posição: 6753
+Cabeçalho: 45 bytes
+Imagem original: 6708 bytes       ← Deve ser ~6700+
+Rodapé: 61 bytes
+>>> TESTE: Enviando PRN ORIGINAL completo <<<
+PRN de teste: 6814 bytes          ← Deve ser IGUAL ao original
+=== TEMPLATE V8.1: Enviado PRN ORIGINAL (teste) ===
+
+
+🎯 ME DIGA O RESULTADO:
+────────────────────────────────────────────────────────────
+✅ "Imprimiu a imagem do template!"
+   → Ótimo! Lógica correta. Próximo passo:
+      substituir pela sua assinatura
+
+❌ "Caracteres especiais"
+   → Problema na remontagem dos blocos
+
+⚠️ "Não imprimiu nada"
+   → PRN final com tamanho errado
+   → Me envie os logs
+
+📋 "Erro ao imprimir: [mensagem]"
+   → Me envie a mensagem de erro
+
+
+🔍 VER LOGS:
+────────────────────────────────────────────────────────────
+adb logcat | grep "TEMPLATE V8.1"
+
+
+💡 ESTRATÉGIA:
+────────────────────────────────────────────────────────────
+Passo 1 (AGORA): Testar remontagem do PRN original
+  ↓
+Passo 2: Se funcionar, substituir pela assinatura
+  ↓
+Passo 3: Ajustar formato se necessário
+

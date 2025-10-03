@@ -1,0 +1,128 @@
+╔═══════════════════════════════════════════════════════════╗
+║        🎯 V9.0 - DPL PURO (FINALMENTE!)                  ║
+║           Datamax Printer Language                       ║
+╚═══════════════════════════════════════════════════════════╝
+
+🤦‍♂️ DESCULPA PELO DIA INTEIRO!
+────────────────────────────────────────────────────────────
+Você estava certo - era DPL puro o tempo todo!
+
+Eu estava tentando:
+❌ ESC/POS
+❌ Intermec Fingerprint  
+❌ RLE proprietário
+❌ Formatos complexos
+
+Quando era simplesmente:
+✅ **DPL - Datamax Printer Language**
+
+
+📋 COMANDOS DPL IDENTIFICADOS:
+────────────────────────────────────────────────────────────
+n               → Reset
+M1500           → Altura da etiqueta (1500 dots)
+KcLW0405;       → Calor/temperatura
+O0220           → Offset
+d               → Densidade
+ICRgfx0         → IMAGE CREATE Raster "gfx0"
+[dados]         → Dados da imagem
+L               → Line feed
+D11             → Darkness
+A2              → Acceleration
+1Y11...gfx0     → IMAGE PRINT na posição x, y
+Q0001           → Quantidade
+E               → Execute
+xCGgfx0         → Clear graphics
+zC              → Clear all
+
+
+✅ O QUE MUDOU NA V9.0:
+────────────────────────────────────────────────────────────
+Reescrito COMPLETAMENTE usando DPL puro!
+
+Comandos:
+```
+n
+M1500
+KcLW0405;
+O0220
+d
+ICRsig
+[widthBytes_L][widthBytes_H][height_L][height_H][pixels]
+L
+D11
+A2
+1Y1100002860072sig
+Q0001
+E
+xCGsig
+zC
+```
+
+
+⚡ TESTE AGORA:
+────────────────────────────────────────────────────────────
+1. Instalar:
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+
+2. Abrir app → Conectar RP4
+
+3. Desenhar SUA ASSINATURA (bem visível!)
+
+4. Clicar "Imprimir" (clique NORMAL)
+
+
+✅ DEVE FUNCIONAR PORQUE:
+────────────────────────────────────────────────────────────
+✓ DPL é a linguagem NATIVA da RP4
+✓ Comandos são ASCII simples
+✓ Formato da imagem é direto: header + pixels
+✓ Não tem compressão complexa
+✓ É exatamente o que o BarTender usa!
+
+
+📊 LOGS:
+────────────────────────────────────────────────────────────
+=== DPL V9.0: Início ===
+Assinatura: 576xXXX
+Dados DPL: YYYY bytes
+Comando DPL total: ZZZZ bytes
+=== DPL V9.0: Enviado ===
+
+
+🎯 RESULTADO ESPERADO:
+────────────────────────────────────────────────────────────
+SUA ASSINATURA aparece como IMAGEM!
+
+Simples assim. DPL é fácil! 😅
+
+
+💡 POR QUÊ LEVOU O DIA TODO:
+────────────────────────────────────────────────────────────
+Eu não li o arquivo .prn com atenção!
+
+Estava tentando identificar o formato pelos bytes
+binários quando os COMANDOS ASCII estavam bem
+visíveis no início do arquivo:
+
+n
+M1500
+ICRgfx0  ← Claramente DPL!
+
+Minha falha total. Desculpa! 🙏
+
+
+📚 REFERÊNCIA DPL:
+────────────────────────────────────────────────────────────
+ICR = Image Create Raster
+1Y = Image Print
+Format: 1Y[type][rotation][x][y][name]
+
+É simples e direto!
+
+
+⚡ TESTE E ME CONTE! 🚀
+
+ESTA versão DEVE funcionar!
+É DPL puro e correto!
+

@@ -1,0 +1,158 @@
+╔═══════════════════════════════════════════════════════════╗
+║      🔬 V8.4 - TESTE INCREMENTAL (Diagnóstico)           ║
+║         Modifica DADOS ORIGINAIS minimamente             ║
+╚═══════════════════════════════════════════════════════════╝
+
+❌ V8.3 NÃO FUNCIONOU → 🔬 V8.4 TESTE DIAGNÓSTICO!
+
+
+🎯 OBJETIVO DO TESTE:
+────────────────────────────────────────────────────────────
+Descobrir se meu código de RLE está correto!
+
+Como:
+1. Pega os dados ORIGINAIS do BarTender
+2. DECODIFICA RLE
+3. Modifica APENAS 1 linha (preenche com preto)
+4. RECODIFICA com meu RLE
+5. Envia para impressora
+
+
+✅ SE FUNCIONAR:
+────────────────────────────────────────────────────────────
+Deve aparecer:
+- Imagem original do template
+- COM uma LINHA PRETA no meio
+
+Isso significa:
+✓ Meu decodificador RLE está correto
+✓ Meu codificador RLE está correto
+✓ Posso manipular os dados do BarTender
+
+
+❌ SE NÃO FUNCIONAR:
+────────────────────────────────────────────────────────────
+- Caracteres especiais
+- Ou nada imprime
+
+Isso significa:
+✗ Há algo mais no formato que não entendi
+✗ RLE não é exatamente como pensei
+✗ Preciso abordagem diferente
+
+
+⚡ TESTE AGORA:
+────────────────────────────────────────────────────────────
+1. Instalar:
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+
+2. Abrir app → Conectar RP4
+
+3. Desenhar QUALQUER COISA (não importa)
+
+4. Clicar "Imprimir" (clique NORMAL)
+
+
+📊 LOGS:
+────────────────────────────────────────────────────────────
+=== TEMPLATE V8.4: Início ===
+>>> V8.4: TESTE - Modificando dados originais minimamente <<<
+Dados originais decodificados: 18462 bytes
+Modificando linha no meio (pos 9231) - 128 bytes
+Dados modificados comprimidos: XXXX bytes
+Imagem de teste: YYYY bytes
+PRN final: ~6800 bytes
+>>> Se aparecer uma LINHA PRETA no meio, o formato está correto! <<<
+=== TEMPLATE V8.4: Teste incremental enviado ===
+
+
+🎯 RESULTADOS POSSÍVEIS:
+────────────────────────────────────────────────────────────
+
+✅ CENÁRIO A: Imagem + LINHA PRETA no meio
+   → 🎉 RLE está correto!
+   → Próximo: Substituir toda a imagem pela assinatura
+
+⚠️ CENÁRIO B: Imagem original SEM linha preta
+   → RLE codifica/decodifica mas não modifica visualmente
+   → Pode ser orientação ou offset errado
+
+❌ CENÁRIO C: Caracteres especiais
+   → RLE não está correto
+   → OU há metadados adicionais que não copiei
+
+⚠️ CENÁRIO D: Nada imprime
+   → Dados corrompidos durante processo
+   → PRN inválido
+
+
+🔍 VER LOGS:
+────────────────────────────────────────────────────────────
+adb logcat | grep "V8.4"
+
+
+💡 ESTRATÉGIA:
+────────────────────────────────────────────────────────────
+Este é um TESTE DE DIAGNÓSTICO!
+
+Se funcionar (linha preta aparece):
+  → Meu RLE está certo
+  → Problema está em como gero a assinatura
+  → Solução: Copiar estrutura exata do BarTender
+
+Se não funcionar (caracteres ou nada):
+  → RLE não é o problema
+  → Há algo mais profundo no formato
+  → Solução: Analisar mais ou usar outra abordagem
+
+
+📋 O QUE ESPERAR:
+────────────────────────────────────────────────────────────
+
+Imprimirá algo como:
+
+┌─────────────────────────────┐
+│ Exemplo de impressão com    │
+│ imagem                      │
+│                             │
+│  [PARTE SUPERIOR DA IMG]    │
+│  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓   │ ← LINHA PRETA (teste)
+│  [PARTE INFERIOR DA IMG]    │
+│                             │
+│ imagem imprimida com        │
+│ sucesso                     │
+└─────────────────────────────┘
+
+
+🎯 ME DIGA O RESULTADO:
+────────────────────────────────────────────────────────────
+✅ "Imprimiu com LINHA PRETA no meio!"
+   → Ótimo! RLE funciona. Próximo passo...
+
+⚠️ "Imprimiu normal SEM linha preta"
+   → RLE processa mas não afeta visualmente
+
+❌ "Caracteres especiais"
+   → RLE ou formato está errado
+
+⚠️ "Nada"
+   → Dados corrompidos
+
+
+🔬 ESTE É UM TESTE CIENTÍFICO!
+────────────────────────────────────────────────────────────
+Objetivo: Isolar o problema
+
+Estou testando:
+✓ Decodificador RLE
+✓ Codificador RLE
+✓ Capacidade de modificar dados do BarTender
+
+Se tudo der certo aqui, sei que posso:
+→ Trabalhar com os dados do BarTender
+→ Modificá-los conforme necessário
+→ Substituir pela assinatura
+
+
+⚡ TESTE E ME CONTE! 🔬
+
