@@ -1,7 +1,10 @@
 package com.honeywell.rp4printer
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager as AndroidBluetoothManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,22 +14,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.activity.result.contract.ActivityResultContracts
-import com.honeywell.rp4printer.bluetooth.BluetoothManager
-import com.honeywell.rp4printer.printer.PrinterManager
+import com.honeywell.rp4printer.printer.HoneywellSDKPrinter
 import com.honeywell.rp4printer.signature.SignatureView
 import kotlinx.coroutines.launch
 
 /**
- * Activity principal do aplicativo RP4 Printer.
- * 
- * VERSÃO BLUETOOTH DIRETO - Funciona em QUALQUER dispositivo Android!
- * NÃO requer Honeywell Print Service.
+ * Activity principal - USA APENAS SDK OFICIAL DA HONEYWELL!
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bluetoothManager: BluetoothManager
-    private lateinit var printerManager: PrinterManager
+    private lateinit var sdkPrinter: HoneywellSDKPrinter
     private var signatureView: SignatureView? = null
+    private var bluetoothAdapter: BluetoothAdapter? = null
     
     private val requestPermissions = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -42,9 +41,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
-        // Inicializa os gerenciadores
-        bluetoothManager = BluetoothManager(this)
-        printerManager = PrinterManager(bluetoothManager, this)  // Passa context para ler assets
+        // SDK OFICIAL APENAS!
+        sdkPrinter = HoneywellSDKPrinter(this)
+        
+        // Bluetooth adapter nativo (só para listar dispositivos)
+        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as AndroidBluetoothManager
+        bluetoothAdapter = btManager.adapter
         
         signatureView = findViewById(R.id.signatureView)
         
@@ -58,12 +60,6 @@ class MainActivity : AppCompatActivity() {
         
         findViewById<android.widget.Button>(R.id.btnPrint).setOnClickListener {
             printSignature()
-        }
-        
-        // Botão de TESTE PRN (longo clique no botão de impressão)
-        findViewById<android.widget.Button>(R.id.btnPrint).setOnLongClickListener {
-            testPrnFile()
-            true
         }
     }
 
@@ -89,12 +85,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showPrinterSelection() {
-        if (!bluetoothManager.isBluetoothEnabled()) {
+        if (bluetoothAdapter?.isEnabled != true) {
             Toast.makeText(this, "Bluetooth desabilitado", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val devices = bluetoothManager.getPairedDevices()
+        @Suppress("MissingPermission")
+        val devices = bluetoothAdapter?.bondedDevices?.toList() ?: emptyList()
+        
         if (devices.isEmpty()) {
             Toast.makeText(this, "Nenhuma impressora pareada", Toast.LENGTH_SHORT).show()
             return
@@ -111,19 +109,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Conecta à impressora via Bluetooth direto
+     * Conecta à impressora usando SDK OFICIAL (ÚNICO)
      */
     private fun connectToPrinter(device: BluetoothDevice) {
         lifecycleScope.launch {
-            Toast.makeText(this@MainActivity, "Conectando...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "Conectando com SDK Oficial...", Toast.LENGTH_SHORT).show()
             
-            // Conecta via Bluetooth direto (sem SDK)
-            val result = bluetoothManager.connect(device)
+            // Conecta usando SDK OFICIAL!
+            val result = sdkPrinter.connect(device.address)
             
             if (result.isSuccess) {
                 Toast.makeText(
                     this@MainActivity, 
-                    "✓ Conectado à ${device.name}!", 
+                    "✓ Conectado com SDK Oficial!", 
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -138,43 +136,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * TESTE: Imprime o arquivo exemploline.prn (PackBits RLE)
-     * Segure o botão "Imprimir" por 2 segundos para testar
-     */
-    private fun testPrnFile() {
-        if (!bluetoothManager.isConnected()) {
-            Toast.makeText(this, "Conecte à impressora primeiro!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        lifecycleScope.launch {
-            Toast.makeText(
-                this@MainActivity, 
-                "🧪 TESTE: Imprimindo exemploline.prn...", 
-                Toast.LENGTH_SHORT
-            ).show()
-            
-            val result = printerManager.printPrnExampleLine()
-            
-            if (result.isSuccess) {
-                Toast.makeText(
-                    this@MainActivity, 
-                    "✓ Arquivo PRN (Line) enviado!\nVerifique se imprimiu corretamente.", 
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                val errorMsg = result.exceptionOrNull()?.message ?: "Erro desconhecido"
-                Toast.makeText(
-                    this@MainActivity, 
-                    "✗ Erro ao enviar PRN: $errorMsg", 
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
-
-    /**
-     * Imprime a assinatura capturada
+     * Imprime a assinatura usando SDK OFICIAL da Honeywell!
      */
     private fun printSignature() {
         val signature = signatureView?.getSignatureBitmap()
@@ -184,25 +146,24 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        if (!bluetoothManager.isConnected()) {
+        if (!sdkPrinter.isConnected()) {
             Toast.makeText(this, "Conecte à impressora primeiro!", Toast.LENGTH_SHORT).show()
             return
         }
 
         lifecycleScope.launch {
-            Toast.makeText(this@MainActivity, "Imprimindo assinatura...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "Imprimindo com SDK Oficial...", Toast.LENGTH_SHORT).show()
             
-            // V12.0: V13 PackBits - Template + substituição de imagem!
-            val result = printerManager.printSignaturePackBits(signature)
+            // USA SDK OFICIAL DA HONEYWELL!
+            val result = sdkPrinter.printSignature(signature)
             
             if (result.isSuccess) {
                 Toast.makeText(
                     this@MainActivity, 
-                    "✓ Assinatura impressa (PackBits RLE)!", 
+                    "✓ Assinatura impressa com SDK Oficial!", 
                     Toast.LENGTH_LONG
                 ).show()
-                // Opcionalmente, limpar a assinatura após imprimir
-                // signatureView?.clear()
+                signatureView?.clear()
             } else {
                 val errorMsg = result.exceptionOrNull()?.message ?: "Erro desconhecido"
                 Toast.makeText(
@@ -216,8 +177,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Desconecta do Bluetooth ao sair
-        bluetoothManager.disconnect()
+        sdkPrinter.disconnect()
     }
 }
-

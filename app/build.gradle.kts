@@ -94,3 +94,8 @@ dependencies {
 }
 
 
+
+// SDK Oficial Honeywell
+dependencies {
+    implementation(files("libs/DO_AndroidSDK_v2.4.9.aar"))
+}

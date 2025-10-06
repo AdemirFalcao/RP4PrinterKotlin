@@ -31,7 +31,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="193dp"
         android:layout_weight="1"
         android:background="#EEEEEE"
         android:padding="2dp">
@@ -39,8 +39,8 @@
         <com.honeywell.rp4printer.signature.SignatureView
             android:id="@+id/signatureView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF"/>
+            android:layout_height="483dp"
+            android:background="#FFFFFF" />
     </FrameLayout>
 
     <LinearLayout
