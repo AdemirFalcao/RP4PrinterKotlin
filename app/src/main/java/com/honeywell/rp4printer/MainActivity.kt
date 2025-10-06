@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * TESTE: Imprime o arquivo exemploline.prn (modo Line)
+     * TESTE: Imprime o arquivo exemploline.prn (PackBits RLE)
      * Segure o botão "Imprimir" por 2 segundos para testar
      */
     private fun testPrnFile() {
@@ -192,13 +192,13 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             Toast.makeText(this@MainActivity, "Imprimindo assinatura...", Toast.LENGTH_SHORT).show()
             
-            // V12.0: Modo LINE - Template + substituição de imagem!
-            val result = printerManager.printSignatureLineMode(signature)
+            // V12.0: V13 PackBits - Template + substituição de imagem!
+            val result = printerManager.printSignaturePackBits(signature)
             
             if (result.isSuccess) {
                 Toast.makeText(
                     this@MainActivity, 
-                    "✓ Assinatura impressa (modo Line)!", 
+                    "✓ Assinatura impressa (PackBits RLE)!", 
                     Toast.LENGTH_LONG
                 ).show()
                 // Opcionalmente, limpar a assinatura após imprimir

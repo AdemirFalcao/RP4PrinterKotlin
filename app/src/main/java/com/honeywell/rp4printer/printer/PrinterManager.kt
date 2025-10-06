@@ -3,10 +3,7 @@ package com.honeywell.rp4printer.printer
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.util.Base64
 import android.util.Log
-import com.honeywell.rp4printer.api.BartenderApi
-import com.honeywell.rp4printer.api.GeneratePrnRequest
 import com.honeywell.rp4printer.bluetooth.BluetoothManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -119,6 +116,227 @@ class PrinterManager(
         Log.d(TAG, "GW: $blackPixels pixels pretos em ${width}x${height}")
         
         return hexData.toString()
+    }
+
+    /**
+     * V13.0 - RECOMEÇO DO ZERO: PackBits RLE (igual BarTender)
+     * Baseado na análise do ChatGPT sobre exemplo.prn
+     */
+    /**
+     * V13.2 - COM LOGS DETALHADOS para debug
+     */
+    suspend fun printSignaturePackBits(bitmap: Bitmap): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            if (!bluetoothManager.isConnected()) {
+                return@withContext Result.failure(Exception("Não conectado"))
+            }
+
+            Log.d(TAG, "=== V13.2 PackBits: Início (COM LOGS DETALHADOS) ===")
+            
+            // 1. Redimensiona para 432px (54 bytes * 8 - usado pelo BarTender)
+            val targetWidth = 432
+            val ratio = targetWidth.toFloat() / bitmap.width
+            val targetHeight = (bitmap.height * ratio).toInt()
+            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
+            
+            Log.d(TAG, "Bitmap: ${scaledBitmap.width}x${scaledBitmap.height}")
+            
+            // 2. Converte para bytes (1 bit/pixel, MSB first)
+            val packedBytes = bitmapToPackedBytesV13(scaledBitmap)
+            Log.d(TAG, "Packed: ${packedBytes.size} bytes")
+            Log.d(TAG, "Packed primeiros 20 bytes: ${packedBytes.take(20).joinToString(" ") { "%02X".format(it) }}")
+            
+            // 3. Comprime com PackBits RLE
+            val compressed = packBitsEncodeV13(packedBytes)
+            Log.d(TAG, "Comprimido: ${compressed.size} bytes")
+            Log.d(TAG, "Comprimido primeiros 20 bytes: ${compressed.take(20).joinToString(" ") { "%02X".format(it) }}")
+            
+            // 4. Monta DPL job
+            val dplJob = buildDplJobV13(scaledBitmap, compressed)
+            Log.d(TAG, "Job DPL: ${dplJob.size} bytes")
+            
+            // === LOGS DETALHADOS DOS COMANDOS ===
+            Log.d(TAG, "")
+            Log.d(TAG, "=== COMANDOS DPL ENVIADOS (hex) ===")
+            
+            // Mostra os primeiros 100 bytes
+            Log.d(TAG, "Primeiros 100 bytes:")
+            for (i in 0 until minOf(100, dplJob.size) step 16) {
+                val chunk = dplJob.sliceArray(i until minOf(i + 16, dplJob.size))
+                val hex = chunk.joinToString(" ") { "%02X".format(it) }
+                val ascii = chunk.map { if (it in 32..126) it.toInt().toChar() else '.' }.joinToString("")
+                Log.d(TAG, String.format("%04X: %-47s %s", i, hex, ascii))
+            }
+            
+            // Mostra onde começa a imagem
+            val icrIndex = dplJob.indexOf(0x49)  // 'I' de ICRgfx0
+            if (icrIndex > 0) {
+                Log.d(TAG, "")
+                Log.d(TAG, "Início da imagem (ICRgfx0) em offset 0x${icrIndex.toString(16)}:")
+                val start = maxOf(0, icrIndex - 10)
+                val end = minOf(dplJob.size, icrIndex + 30)
+                for (i in start until end step 16) {
+                    val chunk = dplJob.sliceArray(i until minOf(i + 16, dplJob.size))
+                    val hex = chunk.joinToString(" ") { "%02X".format(it) }
+                    val ascii = chunk.map { if (it in 32..126) it.toInt().toChar() else '.' }.joinToString("")
+                    Log.d(TAG, String.format("%04X: %-47s %s", i, hex, ascii))
+                }
+            }
+            
+            // Mostra os últimos 100 bytes
+            Log.d(TAG, "")
+            Log.d(TAG, "Últimos 100 bytes:")
+            val startLast = maxOf(0, dplJob.size - 100)
+            for (i in startLast until dplJob.size step 16) {
+                val chunk = dplJob.sliceArray(i until minOf(i + 16, dplJob.size))
+                val hex = chunk.joinToString(" ") { "%02X".format(it) }
+                val ascii = chunk.map { if (it in 32..126) it.toInt().toChar() else '.' }.joinToString("")
+                Log.d(TAG, String.format("%04X: %-47s %s", i, hex, ascii))
+            }
+            
+            Log.d(TAG, "=== FIM DOS LOGS DETALHADOS ===")
+            Log.d(TAG, "")
+            
+            // 5. Envia
+            bluetoothManager.send(dplJob)
+            Thread.sleep(2000)
+            
+            Log.d(TAG, "=== V13.2: Enviado! ===")
+            Result.success(Unit)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro V13.2", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Converte Bitmap para bytes (1 bit/pixel, MSB first)
+     */
+    private fun bitmapToPackedBytesV13(bitmap: Bitmap): ByteArray {
+        val width = bitmap.width
+        val height = bitmap.height
+        val widthBytes = (width + 7) / 8
+        val output = ByteArrayOutputStream()
+        
+        for (y in 0 until height) {
+            for (xByte in 0 until widthBytes) {
+                var byte = 0
+                for (bit in 0..7) {
+                    val x = xByte * 8 + bit
+                    if (x < width) {
+                        val pixel = bitmap.getPixel(x, y)
+                        val gray = (0.299 * Color.red(pixel) + 
+                                   0.587 * Color.green(pixel) + 
+                                   0.114 * Color.blue(pixel)).toInt()
+                        if (gray < 128) {
+                            byte = byte or (1 shl (7 - bit))
+                        }
+                    }
+                }
+                output.write(byte)
+            }
+        }
+        
+        return output.toByteArray()
+    }
+
+    /**
+     * PackBits RLE Encoder
+     * Literal: [n][byte1]...[byteN+1] onde n=0..127
+     * Run: [257-n][byte] onde n=2..128 repetições
+     */
+    private fun packBitsEncodeV13(input: ByteArray): ByteArray {
+        val output = ByteArrayOutputStream()
+        var pos = 0
+        
+        while (pos < input.size) {
+            // Procura run
+            var runLength = 1
+            while (pos + runLength < input.size && 
+                   input[pos + runLength] == input[pos] && 
+                   runLength < 128) {
+                runLength++
+            }
+            
+            if (runLength >= 3) {
+                // Run: [257-runLength][byte]
+                output.write((257 - runLength) and 0xFF)
+                output.write(input[pos].toInt() and 0xFF)
+                pos += runLength
+            } else {
+                // Literal: coleta bytes não-repetidos
+                val literalStart = pos
+                var literalEnd = pos
+                
+                while (literalEnd < input.size) {
+                    var nextRun = 1
+                    while (literalEnd + nextRun < input.size && 
+                           input[literalEnd + nextRun] == input[literalEnd] && 
+                           nextRun < 128) {
+                        nextRun++
+                    }
+                    
+                    if (nextRun >= 3) break
+                    
+                    literalEnd++
+                    if (literalEnd - literalStart >= 128) break
+                }
+                
+                val literalLength = literalEnd - literalStart
+                if (literalLength > 0) {
+                    output.write(literalLength - 1)
+                    for (i in literalStart until literalEnd) {
+                        output.write(input[i].toInt() and 0xFF)
+                    }
+                    pos = literalEnd
+                } else {
+                    pos++
+                }
+            }
+        }
+        
+        return output.toByteArray()
+    }
+
+    /**
+     * Monta job DPL (estrutura exata do exemplo.prn)
+     */
+    private fun buildDplJobV13(bitmap: Bitmap, compressedData: ByteArray): ByteArray {
+        val output = ByteArrayOutputStream()
+        val widthBytes = (bitmap.width + 7) / 8
+        val height = bitmap.height
+        
+        // Setup
+        output.write("\u0002n\r\n".toByteArray())
+        output.write("\u0002M1500\r\n".toByteArray())
+        output.write("\u0002KcLW0405;\r\n".toByteArray())
+        output.write("\u0002O0220\r\n".toByteArray())
+        
+        // Download imagem
+        output.write("\u0002d\r\n".toByteArray())
+        output.write("\u0002ICRgfx0\r".toByteArray())
+        
+        // Header (4 bytes, little-endian)
+        output.write(widthBytes and 0xFF)
+        output.write((widthBytes shr 8) and 0xFF)
+        output.write(height and 0xFF)
+        output.write((height shr 8) and 0xFF)
+        
+        // Dados comprimidos
+        output.write(compressedData)
+        
+        // Comandos finais
+        output.write("\r\n\u0002L\r\n".toByteArray())
+        output.write("D11\r\n".toByteArray())
+        output.write("A2\r\n".toByteArray())
+        output.write("1Y1100002860072gfx0\r\n".toByteArray())
+        output.write("Q0001\r\n".toByteArray())
+        output.write("E\r\n".toByteArray())
+        output.write("\u0002xCGgfx0\r\n".toByteArray())
+        output.write("\u0002zC\r\n".toByteArray())
+        
+        return output.toByteArray()
     }
 
     /**
@@ -333,58 +551,6 @@ class PrinterManager(
      * - Confiável e testado
      * - Evita problemas de formato/encoding
      */
-    suspend fun printSignatureViaBartender(bitmap: Bitmap): Result<Unit> = withContext(Dispatchers.IO) {
-        try {
-            if (!bluetoothManager.isConnected()) {
-                return@withContext Result.failure(Exception("Não conectado à impressora"))
-            }
-
-            Log.d(TAG, "=== BARTENDER API V11: Início ===")
-            
-            // 1. Converte bitmap para PNG em base64
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-            val imageBytes = baos.toByteArray()
-            val base64Image = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
-            
-            Log.d(TAG, "Bitmap convertido: ${imageBytes.size} bytes → ${base64Image.length} chars base64")
-            
-            // 2. Chama API para gerar PRN via BarTender
-            Log.d(TAG, "Chamando API BarTender...")
-            val request = GeneratePrnRequest(
-                signature = base64Image,
-                template = "assinatura.btw"
-            )
-            
-            val response = BartenderApi.service.generatePrn(request)
-            
-            if (!response.isSuccessful) {
-                val errorBody = response.errorBody()?.string() ?: "Erro desconhecido"
-                Log.e(TAG, "Erro API: ${response.code()} - $errorBody")
-                return@withContext Result.failure(Exception("Erro na API: $errorBody"))
-            }
-            
-            // 3. Pega o PRN gerado
-            val prnData = response.body()?.bytes()
-            if (prnData == null || prnData.isEmpty()) {
-                Log.e(TAG, "PRN vazio recebido")
-                return@withContext Result.failure(Exception("PRN vazio"))
-            }
-            
-            Log.d(TAG, "PRN recebido: ${prnData.size} bytes")
-            
-            // 4. Envia PRN direto para impressora
-            bluetoothManager.send(prnData)
-            Thread.sleep(2000)  // Aguarda impressão
-            
-            Log.d(TAG, "=== BARTENDER API V11: Sucesso! ===")
-            Result.success(Unit)
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro ao usar API BarTender", e)
-            Result.failure(e)
-        }
-    }
 
     /**
      * Converte Bitmap para formato DPL
