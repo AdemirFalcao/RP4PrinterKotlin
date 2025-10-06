@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * TESTE: Imprime o arquivo exemplo.prn do BarTender
+     * TESTE: Imprime o arquivo exemploline.prn (modo Line)
      * Segure o botão "Imprimir" por 2 segundos para testar
      */
     private fun testPrnFile() {
@@ -150,16 +150,16 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             Toast.makeText(
                 this@MainActivity, 
-                "🧪 TESTE: Imprimindo exemplo.prn...", 
+                "🧪 TESTE: Imprimindo exemploline.prn...", 
                 Toast.LENGTH_SHORT
             ).show()
             
-            val result = printerManager.printPrnExample()
+            val result = printerManager.printPrnExampleLine()
             
             if (result.isSuccess) {
                 Toast.makeText(
                     this@MainActivity, 
-                    "✓ Arquivo PRN enviado!\nVerifique se imprimiu corretamente.", 
+                    "✓ Arquivo PRN (Line) enviado!\nVerifique se imprimiu corretamente.", 
                     Toast.LENGTH_LONG
                 ).show()
             } else {
@@ -192,13 +192,13 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             Toast.makeText(this@MainActivity, "Imprimindo assinatura...", Toast.LENGTH_SHORT).show()
             
-            // V9.0: DPL PURO - Finalmente correto!
-            val result = printerManager.printSignatureDPL(signature)
+            // V12.0: Modo LINE - Template + substituição de imagem!
+            val result = printerManager.printSignatureLineMode(signature)
             
             if (result.isSuccess) {
                 Toast.makeText(
                     this@MainActivity, 
-                    "✓ Assinatura impressa com DPL!", 
+                    "✓ Assinatura impressa (modo Line)!", 
                     Toast.LENGTH_LONG
                 ).show()
                 // Opcionalmente, limpar a assinatura após imprimir

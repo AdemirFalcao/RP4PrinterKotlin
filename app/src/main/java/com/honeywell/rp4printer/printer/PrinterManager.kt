@@ -3,7 +3,10 @@ package com.honeywell.rp4printer.printer
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.util.Base64
 import android.util.Log
+import com.honeywell.rp4printer.api.BartenderApi
+import com.honeywell.rp4printer.api.GeneratePrnRequest
 import com.honeywell.rp4printer.bluetooth.BluetoothManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -119,6 +122,271 @@ class PrinterManager(
     }
 
     /**
+     * V12.1 - TESTE SEM RLE: Apenas conversão bitmap para ver se o problema é o RLE
+     */
+    suspend fun printSignatureLineMode(bitmap: Bitmap): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            if (!bluetoothManager.isConnected()) {
+                return@withContext Result.failure(Exception("Não conectado"))
+            }
+
+            Log.d(TAG, "=== V12.2 LINE MODE: Offset correto! ===")
+            
+            // 1. Lê o template que funciona
+            val templateData = context.assets.open("exemploline.prn").readBytes()
+            Log.d(TAG, "Template: ${templateData.size} bytes")
+            
+            // 2. Localiza "ICRgfx0\r" para encontrar o início dos dados
+            // Estrutura: <STX>ICRgfx0<CR>[header 4 bytes][dados RLE...]
+            val icrStart = 0x2A  // Confirmado por análise: "ICRgfx0" começa aqui
+            val headerStart = 0x2D  // Após "x0\r" (3 bytes)
+            
+            // 3. Extrai o header original da imagem (4 bytes)
+            val originalHeader = templateData.copyOfRange(headerStart, headerStart + 4)
+            val widthBytes = (originalHeader[0].toInt() and 0xFF) or ((originalHeader[1].toInt() and 0xFF) shl 8)
+            val heightValue = (originalHeader[2].toInt() and 0xFF) or ((originalHeader[3].toInt() and 0xFF) shl 8)
+            
+            Log.d(TAG, "Header em 0x${headerStart.toString(16)}: ${originalHeader.joinToString(" ") { "%02X".format(it) }}")
+            Log.d(TAG, "Dimensões: ${widthBytes}x$heightValue bytes = ${widthBytes*8}x${heightValue} pixels")
+            
+            // 4. Redimensiona assinatura para EXATAMENTE o mesmo tamanho
+            val targetWidth = widthBytes * 8  // widthBytes em pixels
+            val targetHeight = heightValue
+            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
+            
+            Log.d(TAG, "Bitmap redimensionado: ${scaledBitmap.width}x${scaledBitmap.height} pixels")
+            
+            // 5. Converte para RAW (SEM RLE) - apenas os bytes puros
+            val rawPixels = convertBitmapToRawBytes(scaledBitmap)
+            Log.d(TAG, "Pixels RAW: ${rawPixels.size} bytes (esperado: ${widthBytes * heightValue})")
+            
+            // 6. TESTE: Envia SEM RLE para ver se o problema é a conversão ou o RLE
+            Log.d(TAG, "⚠️ TESTE V12.3: Enviando SEM RLE (dados RAW diretos)")
+            
+            // 7. Monta imagem: HEADER ORIGINAL + dados RAW (SEM RLE!)
+            val imageData = ByteArrayOutputStream()
+            imageData.write(originalHeader)  // Mantém header original
+            imageData.write(rawPixels)  // Dados RAW sem comprimir!
+            
+            // 8. Monta PRN substituindo apenas a imagem
+            val header = templateData.copyOfRange(0, headerStart)  // Até início do header
+            val footer = templateData.copyOfRange(0x1A63, templateData.size)
+            
+            val output = ByteArrayOutputStream()
+            output.write(header)
+            output.write(imageData.toByteArray())
+            output.write(footer)
+            
+            val finalPrn = output.toByteArray()
+            Log.d(TAG, "PRN final: ${finalPrn.size} bytes (template: ${templateData.size})")
+            
+            // 8. Envia para impressora
+            bluetoothManager.send(finalPrn)
+            Thread.sleep(2000)
+            
+            Log.d(TAG, "=== V12.1 LINE MODE: Enviado! ===")
+            Result.success(Unit)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro V12.1 Line Mode", e)
+            Result.failure(e)
+        }
+    }
+    
+    /**
+     * Converte Bitmap para bytes RAW (sem RLE)
+     * 1 bit por pixel, 8 pixels por byte, MSB first
+     */
+    private fun convertBitmapToRawBytes(bitmap: Bitmap): ByteArray {
+        val width = bitmap.width
+        val height = bitmap.height
+        val widthBytes = (width + 7) / 8
+        
+        val output = ByteArrayOutputStream()
+        
+        for (y in 0 until height) {
+            for (xByte in 0 until widthBytes) {
+                var byte = 0
+                for (bit in 0..7) {
+                    val x = xByte * 8 + bit
+                    if (x < width) {
+                        val pixel = bitmap.getPixel(x, y)
+                        val gray = (Color.red(pixel) + Color.green(pixel) + Color.blue(pixel)) / 3
+                        if (gray < 128) {  // Preto = 1
+                            byte = byte or (1 shl (7 - bit))
+                        }
+                    }
+                }
+                output.write(byte)
+            }
+        }
+        
+        return output.toByteArray()
+    }
+
+    /**
+     * Converte Bitmap para formato DPL com RLE (Run-Length Encoding)
+     * Formato: [header 4 bytes][dados RLE comprimidos]
+     */
+    private fun convertBitmapToDPLWithRLE(bitmap: Bitmap): ByteArray {
+        val width = bitmap.width
+        val height = bitmap.height
+        val widthBytes = (width + 7) / 8
+        
+        val output = ByteArrayOutputStream()
+        
+        // Header DPL (4 bytes): [widthBytes_L, widthBytes_H, height_L, height_H]
+        output.write(widthBytes and 0xFF)
+        output.write((widthBytes shr 8) and 0xFF)
+        output.write(height and 0xFF)
+        output.write((height shr 8) and 0xFF)
+        
+        // Converte cada linha e aplica RLE
+        for (y in 0 until height) {
+            val lineBytes = ByteArray(widthBytes)
+            
+            // Converte pixels para bytes (1 bit por pixel, 8 pixels por byte)
+            for (xByte in 0 until widthBytes) {
+                var byte = 0
+                for (bit in 0..7) {
+                    val x = xByte * 8 + bit
+                    if (x < width) {
+                        val pixel = bitmap.getPixel(x, y)
+                        val gray = (Color.red(pixel) + Color.green(pixel) + Color.blue(pixel)) / 3
+                        if (gray < 128) {  // Preto
+                            byte = byte or (1 shl (7 - bit))
+                        }
+                    }
+                }
+                lineBytes[xByte] = byte.toByte()
+            }
+            
+            // Aplica RLE na linha
+            val rleData = applyRLE(lineBytes)
+            output.write(rleData)
+        }
+        
+        return output.toByteArray()
+    }
+
+    /**
+     * Aplica Run-Length Encoding (RLE) em uma linha de dados
+     * 
+     * Formato RLE usado pelo DPL:
+     * - Se byte se repete N vezes: [count+0x80][byte]
+     * - Senão: [count][byte1][byte2]...[byteN]
+     */
+    private fun applyRLE(data: ByteArray): ByteArray {
+        if (data.isEmpty()) return byteArrayOf()
+        
+        val output = ByteArrayOutputStream()
+        var i = 0
+        
+        while (i < data.size) {
+            val currentByte = data[i]
+            var count = 1
+            
+            // Conta repetições
+            while (i + count < data.size && data[i + count] == currentByte && count < 127) {
+                count++
+            }
+            
+            if (count >= 3) {
+                // RLE: repetições
+                output.write(count or 0x80)
+                output.write(currentByte.toInt() and 0xFF)
+                i += count
+            } else {
+                // Literal: busca sequência sem repetições
+                var literalCount = 0
+                val startPos = i
+                
+                while (i < data.size && literalCount < 127) {
+                    // Verifica se próximos bytes repetem (se sim, para literal)
+                    if (i + 2 < data.size && data[i] == data[i + 1] && data[i] == data[i + 2]) {
+                        break
+                    }
+                    literalCount++
+                    i++
+                }
+                
+                if (literalCount > 0) {
+                    output.write(literalCount)
+                    output.write(data, startPos, literalCount)
+                }
+            }
+        }
+        
+        return output.toByteArray()
+    }
+
+    /**
+     * V11.0 - MÉTODO VIA API BARTENDER (SOLUÇÃO ALTERNATIVA)
+     * 
+     * Este método:
+     * 1. Converte o bitmap para base64
+     * 2. Envia para API que usa BarTender para gerar PRN
+     * 3. Recebe PRN pronto e envia para impressora
+     * 
+     * VANTAGENS:
+     * - Usa o mesmo gerador do arquivo que já funciona (exemplo.prn)
+     * - Confiável e testado
+     * - Evita problemas de formato/encoding
+     */
+    suspend fun printSignatureViaBartender(bitmap: Bitmap): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            if (!bluetoothManager.isConnected()) {
+                return@withContext Result.failure(Exception("Não conectado à impressora"))
+            }
+
+            Log.d(TAG, "=== BARTENDER API V11: Início ===")
+            
+            // 1. Converte bitmap para PNG em base64
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            val imageBytes = baos.toByteArray()
+            val base64Image = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
+            
+            Log.d(TAG, "Bitmap convertido: ${imageBytes.size} bytes → ${base64Image.length} chars base64")
+            
+            // 2. Chama API para gerar PRN via BarTender
+            Log.d(TAG, "Chamando API BarTender...")
+            val request = GeneratePrnRequest(
+                signature = base64Image,
+                template = "assinatura.btw"
+            )
+            
+            val response = BartenderApi.service.generatePrn(request)
+            
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string() ?: "Erro desconhecido"
+                Log.e(TAG, "Erro API: ${response.code()} - $errorBody")
+                return@withContext Result.failure(Exception("Erro na API: $errorBody"))
+            }
+            
+            // 3. Pega o PRN gerado
+            val prnData = response.body()?.bytes()
+            if (prnData == null || prnData.isEmpty()) {
+                Log.e(TAG, "PRN vazio recebido")
+                return@withContext Result.failure(Exception("PRN vazio"))
+            }
+            
+            Log.d(TAG, "PRN recebido: ${prnData.size} bytes")
+            
+            // 4. Envia PRN direto para impressora
+            bluetoothManager.send(prnData)
+            Thread.sleep(2000)  // Aguarda impressão
+            
+            Log.d(TAG, "=== BARTENDER API V11: Sucesso! ===")
+            Result.success(Unit)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao usar API BarTender", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
      * Converte Bitmap para formato DPL
      * DPL: [widthBytes_L][widthBytes_H][height_L][height_H][pixels]
      */
@@ -191,6 +459,38 @@ class PrinterManager(
             Result.success(Unit)
         } catch (e: Exception) {
             Log.e(TAG, "Erro ao enviar PRN", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * V12: TESTE - Imprime exemploline.prn (modo Line)
+     * Use este método para validar que o modo Line funciona!
+     */
+    suspend fun printPrnExampleLine(): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            if (!bluetoothManager.isConnected()) {
+                return@withContext Result.failure(Exception("Não conectado"))
+            }
+
+            Log.d(TAG, "=== TESTE PRN LINE: Lendo exemploline.prn ===")
+            
+            // Lê o arquivo PRN dos assets
+            val prnData = context.assets.open("exemploline.prn").use { inputStream ->
+                inputStream.readBytes()
+            }
+            
+            Log.d(TAG, "Arquivo PRN (Line): ${prnData.size} bytes")
+            Log.d(TAG, "Primeiros bytes: ${prnData.take(50).joinToString(" ") { "%02X".format(it) }}")
+            
+            // Envia DIRETO para a impressora (sem processar!)
+            bluetoothManager.send(prnData)
+            Thread.sleep(2000)
+            
+            Log.d(TAG, "=== TESTE PRN LINE: Enviado ===")
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro ao enviar PRN Line", e)
             Result.failure(e)
         }
     }
@@ -488,42 +788,6 @@ class PrinterManager(
         }
         
         Log.d(TAG, "Intermec RAW: $blackPixels pixels pretos, ${width}x${height}, ${output.size()} bytes")
-        
-        return output.toByteArray()
-    }
-
-    /**
-     * Aplica Run-Length Encoding (RLE) ao estilo Intermec
-     */
-    private fun applyRLE(data: ByteArray): ByteArray {
-        val output = ByteArrayOutputStream()
-        var i = 0
-        
-        while (i < data.size) {
-            val currentByte = data[i]
-            var count = 1
-            
-            // Conta bytes iguais consecutivos
-            while (i + count < data.size && 
-                   data[i + count] == currentByte && 
-                   count < 255) {
-                count++
-            }
-            
-            // Se tiver 3 ou mais repetições, comprime
-            if (count >= 3) {
-                // Formato: 0x01 0x00 COUNT BYTE
-                output.write(0x01)
-                output.write(0x00)
-                output.write(count)
-                output.write(currentByte.toInt())
-                i += count
-            } else {
-                // Escreve direto
-                output.write(currentByte.toInt())
-                i++
-            }
-        }
         
         return output.toByteArray()
     }
