@@ -1,0 +1,118 @@
+[
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_activity_connection_settings.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/activity_connection_settings.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_folder.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/folder.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_file_pdf.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/file_pdf.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_honeywell_icon.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/honeywell_icon.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_companylogo256.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/companylogo256.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_file_empty_view.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/file_empty_view.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_fm_express.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/fm_express.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-xxhdpi_ic_launcher.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_file.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/file.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_doabout.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/doabout.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_dologo.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/dologo.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_honeywell_inverted_icon.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/honeywell_inverted_icon.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_custom_shape.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/custom_shape.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_ic_launcher.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_custom_background.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/custom_background.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_custom_button_selector.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/custom_button_selector.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_custom_button_text_color.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/custom_button_text_color.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_border.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/border.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_messagebox.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/messagebox.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_custom_button_selected.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/custom_button_selected.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_activity_doprint_main.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/activity_doprint_main.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_file_view_main.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/file_view_main.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/layout_file_list_item.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/layout/file_list_item.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-xhdpi_ic_launcher.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_honeywell_icon_transparent.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/honeywell_icon_transparent.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-mdpi_ic_launcher.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable-hdpi_honeywell_logo.png.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable-hdpi/honeywell_logo.png"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/menu_doprint_main.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/menu/doprint_main.xml"
+    },
+    {
+        "merged": "com.honeywell.doprint.DOPrint-merged_res-29:/drawable_custom_button_normal.xml.flat",
+        "source": "com.honeywell.doprint.DOPrint-main-31:/drawable/custom_button_normal.xml"
+    }
+]

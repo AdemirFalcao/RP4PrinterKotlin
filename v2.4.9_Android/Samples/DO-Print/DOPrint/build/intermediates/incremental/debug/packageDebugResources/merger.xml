@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res"><file name="border" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/border.xml" qualifiers="" type="drawable"/><file name="custom_button_normal" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/custom_button_normal.xml" qualifiers="" type="drawable"/><file name="custom_button_selector" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/custom_button_selector.xml" qualifiers="" type="drawable"/><file name="custom_button_text_color" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/custom_button_text_color.xml" qualifiers="" type="drawable"/><file name="custom_button_selected" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/custom_button_selected.xml" qualifiers="" type="drawable"/><file name="custom_background" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/custom_background.xml" qualifiers="" type="drawable"/><file name="custom_shape" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable/custom_shape.xml" qualifiers="" type="drawable"/><file path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/values-sw720dp-land/dimens.xml" qualifiers="sw720dp-land-v13"><dimen name="activity_horizontal_margin">128dp</dimen></file><file name="activity_doprint_main" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/activity_doprint_main.xml" qualifiers="" type="layout"/><file name="file_list_item" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/file_list_item.xml" qualifiers="" type="layout"/><file name="doabout" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/doabout.xml" qualifiers="" type="layout"/><file name="messagebox" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/messagebox.xml" qualifiers="" type="layout"/><file name="file_empty_view" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/file_empty_view.xml" qualifiers="" type="layout"/><file name="file_view_main" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/file_view_main.xml" qualifiers="" type="layout"/><file name="activity_connection_settings" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/layout/activity_connection_settings.xml" qualifiers="" type="layout"/><file path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/values-sw600dp/dimens.xml" qualifiers="sw600dp-v13"/><file path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/values/colors.xml" qualifiers=""><color name="tealDark">#003232</color><color name="teal">#008080</color><color name="tealMedium">#006464</color><color name="tealMediumDark">#005050</color><color name="white">#ffffffff</color><color name="black">#ff000000</color><color name="primary_text_light">#de000000</color><color name="secondary_text_dark">#b3ffffff</color></file><file path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/values/dimens.xml" qualifiers=""><dimen name="activity_horizontal_margin">16dp</dimen><dimen name="activity_vertical_margin">16dp</dimen></file><file path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/values/styles.xml" qualifiers=""><style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="android:textColorPrimary">@color/primary_text_light</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="colorPrimary">@color/tealDark</item>
+        <item name="colorPrimaryDark">@color/black</item>
+
+    </style><style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        
+        <item name="android:textColorPrimary">@color/primary_text_light</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+
+        
+        <item name="colorPrimary">@color/tealDark</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style></file><file path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/values/strings.xml" qualifiers=""><string name="app_name">D-O Print!</string><string name="action_settings">Settings</string><string name="about">About</string><string name="load">Load</string><string name="no_directory">No files or directories</string><string name="back">Back</string><string name="browse">Browse</string><string name="filename">filename</string><string name="current_folder_label">Current Folder:</string><string name="title_activity_file_explorer">FileExplorerActivity</string><string name="close_label">Close</string><string name="version_code_label"> version code: </string><string name="version_name_label"> version code: </string><string name="about_company"> Company: Datamax-ONeil</string><string name="about_copyright"> Copyright: 2011</string><string name="about_decription_text"> This application prints sample label file to a Datamax-ONeil printer.</string><string name="app_description">Enter D-O application description here..</string><string name="image_desc">D-O Logo</string><string name="conn_type">Connection Type:</string><string name="config">Config</string><string name="connection">Select a communication method:</string><string name="connection_settings">Connection Settings</string><string name="connection_not_configured">Connection settings not configured. Please configure connection settings.</string><string name="print_items">Select an item to print:</string><string name="query_items">Select an item to query:</string><string name="printer_mode">Select a printer language:</string><string name="print">Print</string><string name="perform_task">Select what to do:</string><string name="query">Query</string><string name="printHeadWidth">PrintHead Width:</string><string-array name="printHeadWidth_array">
+        <item>384 (2 in.)</item>
+        <item>576 (3 in.)</item>
+        <item>832 (4 in.)</item>
+    </string-array><string-array name="connection_array">
+        <item>Bluetooth</item>
+        <item>TCP/IP</item>
+    </string-array><string-array name="printer_mode_array">
+        <item>EZ</item>
+        <item>LP</item>
+        <item>DPL</item>
+        <item>ExPCL_LP</item>
+        <item>ExPCL_PP</item>
+    </string-array><string-array name="print_list_EZ">
+        <item>3-inch Sample Receipt</item>
+        <item>4-inch Sample Receipt</item>
+        <item>Barcode Sample</item>
+    </string-array><string-array name="print_list_LP">
+        <item>3-inch Sample Receipt</item>
+        <item>4-inch Sample Receipt</item>
+        <item>Image Sample</item>
+    </string-array><string-array name="print_list_DPL">
+       <item>Text Sample</item>
+       <item>Incrementing Sample</item>
+       <item>Barcodes Sample</item>
+       <item>Graphics Sample</item>
+       <item>Image Sample</item>
+    </string-array><string-array name="print_list_ExPCL_LP">
+       <item>Text Sample</item>
+       <item>Barcodes Sample</item>
+       <item>Graphics Sample</item>
+    </string-array><string-array name="print_list_ExPCL_PP">
+       <item>Text Sample</item>
+       <item>Barcodes Sample</item>
+       <item>Rectangles Sample</item>
+    </string-array><string-array name="query_list_Legacy">
+        <item>Avalanche Settings</item>
+        <item>Battery Condition</item>
+        <item>Bluetooth Config</item>
+        <item>Font List</item>
+        <item>Format List</item>
+        <item>General Config</item>
+        <item>General Status</item>
+        <item>Graphics List</item>
+        <item>IrDA Config</item>
+        <item>Label Config</item>
+        <item>Magnetic Config</item>
+        <item>Magnetic Card Data</item>
+        <item>Manufacturing Date</item>
+        <item>Memory Status</item>
+        <item>Printer Options</item>
+        <item>PrintHead Status</item>
+        <item>Serial Number</item>
+        <item>SmartCard Reader Config</item>
+        <item>Serial Port Config</item>
+        <item>TCP/IP Status</item>
+        <item>Update Data</item>
+        <item>Version Information</item>
+    </string-array><string-array name="query_list_DPL">
+        <item>Printer Information</item>
+        <item>Files and Internal Fonts</item>
+        <item>Media Label</item>
+        <item>Print Control Settings</item>
+        <item>System Settings</item>
+        <item>Sensor Calibration</item>
+        <item>Miscellaneous</item>
+        <item>Serial Port Config</item>
+        <item>Auto Update Settings</item>
+        <item>Avalanche Enabler Settings</item>
+        <item>Bluetooth Config</item>
+        <item>Network General Settings</item>
+        <item>Network Wireless Settings</item>
+        <item>Printer Status</item>
+    </string-array><string-array name="query_list_ExPCL">
+        <item>Battery Condition</item>
+        <item>Bluetooth Config</item>
+        <item>General Status</item>
+        <item>Magnetic Card Data</item>
+        <item>Memory Status</item>
+        <item>Print Head Status</item>
+        <item>Version Information</item>
+    </string-array><string name="title_activity_connection_settings">ConnectionSettingsActivity</string><string name="Save_Done_Button">Save</string><string name="enter_mac">Please enter MAC Address:</string><string name="mac_hint">eg. AB:CD:EF:11:22:33 or ABCDEF112233</string><string name="enter_ip">Please enter IP Address of printer:</string><string name="ip_hint">eg. 192.168.99.1</string><string name="port">Port:</string><string name="port_hint">eg. 515</string><string name="save_settings">Save Settings</string><string name="Cancel_Button">Cancel</string><string name="select_folder">Select Folder</string></file><file name="ic_launcher" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-xhdpi/ic_launcher.png" qualifiers="xhdpi-v4" type="drawable"/><file name="ic_launcher" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-xxhdpi/ic_launcher.png" qualifiers="xxhdpi-v4" type="drawable"/><file name="honeywell_inverted_icon" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/honeywell_inverted_icon.png" qualifiers="hdpi-v4" type="drawable"/><file name="honeywell_icon_transparent" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/honeywell_icon_transparent.png" qualifiers="hdpi-v4" type="drawable"/><file name="file" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/file.png" qualifiers="hdpi-v4" type="drawable"/><file name="honeywell_icon" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/honeywell_icon.png" qualifiers="hdpi-v4" type="drawable"/><file name="folder" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/folder.png" qualifiers="hdpi-v4" type="drawable"/><file name="ic_launcher" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/ic_launcher.png" qualifiers="hdpi-v4" type="drawable"/><file name="dologo" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/dologo.png" qualifiers="hdpi-v4" type="drawable"/><file name="companylogo256" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/companylogo256.png" qualifiers="hdpi-v4" type="drawable"/><file name="file_pdf" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/file_pdf.png" qualifiers="hdpi-v4" type="drawable"/><file name="honeywell_logo" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/honeywell_logo.png" qualifiers="hdpi-v4" type="drawable"/><file name="fm_express" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-hdpi/fm_express.png" qualifiers="hdpi-v4" type="drawable"/><file name="doprint_main" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/menu/doprint_main.xml" qualifiers="" type="menu"/><file name="ic_launcher" path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/main/res/drawable-mdpi/ic_launcher.png" qualifiers="mdpi-v4" type="drawable"/></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/amelo/Documents/RP4PrinterKotlin/v2.4.9_Android/Samples/DO-Print/DOPrint/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>

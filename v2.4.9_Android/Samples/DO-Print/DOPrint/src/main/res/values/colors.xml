@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tealDark">#003232</color>
+    <color name="teal">#008080</color>
+    <color name="tealMedium">#006464</color>
+    <color name="tealMediumDark">#005050</color>
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="primary_text_light">#de000000</color>
+    <color name="secondary_text_dark">#b3ffffff</color>
+</resources>

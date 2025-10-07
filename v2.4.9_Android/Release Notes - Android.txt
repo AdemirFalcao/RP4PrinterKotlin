@@ -1,0 +1,102 @@
+D-O SDK For Android
+
+Version 2.4.9 (8/15/2016)
+- Add new writeImage() API to allow user to adjust darkness threshold
+
+Version 2.4.8 (7/28/2016)
+- Fix issue with PrinterStatus not returning correct value when feedback mode is on
+- Improve performance of WriteImage() function for DocumentDPL, DocumentExPCL_LP, and LP
+- Add ability to set text encoding for writeText methods in DocumentEZ and DocumentLP
+
+Version 2.4.7 (6/22/2016)
+- Fix issue with printing multiple images for DocumentDPL
+- Fix issue with multiple pages in PDF file overlapping in DocumentDPL
+- Fix issue with writeImage() method clearing default memory module.
+- Added getXAVRVersionInformation for PrinterInformation_DPL class
+
+Version 2.4.6 (6/21/2016)
+- Fix issue with PDF support not correctly compiled with SDK
+- Added getEmulationsUsedWithAutoMode(), setEmulationsUsedWithAutoMode() for SystemSettings_DPL class
+- Added getBackupDistance() and setBackupDistance() for MediaLabel_DPL class 
+- Fix issue with xAVR and AVR version not displaying after query in PrinterInformation_DPL class.
+- Fix issue with Height Dot multiplier not being set for DocumentDPL
+- Fix issue with GS1 Limited Barcode reporting error on valid input in DocumentDPL
+
+Version 2.4.5 (5/25/2016)
+- Fix issue with printing extended ASCII characters.
+
+Version 2.4.4 (2/17/2016)
+- Fix Errors in API documentations
+- Fix bugs in AvalancheSettings class
+- Add Advance Format Attribute capability (Font bold, font italic, etc..)
+- Add WriteTextInternalSmooth() and WriteTextDownloadedBitmapped() methods
+
+Version 2.4.3 (1/08/2016)
+- Add readLine() method
+- Fix read() methods to correctly truncate data at end sequence
+
+Version 2.4.2 (1/04/2016)
+- Fix data being truncated for Magnetic Card Data (ExPCL)
+- Fix bugs and update DPL configuration classes in SDK to comply with XX.06_0014 firmware
+- Revise logic of getCurrentStatus() for PrinterStatus_DPL class
+
+Version 2.4.1 (09/03/2015)
+- Move getImageRotation() and setImageRotation() from SystemSettings_DPL class to Miscellaneous_DPL class
+- Fix bug for writeBarCodeAztec() in DocumentDPL class
+
+Version 2.4.0 (07/20/2015)
+- Add IP and MAC address validation in Connection.createClient() methods
+- Add AirWatch_DPL, SmartBattery_DPL configuration classes
+- Add BatteryCondition_ExPCL, MemoryStatus_ExPCL, PrintheadStatus_ExPCL, and PrinterOptions_ExPCL classes 
+- Add set methods for configuration classes
+- DocumentDPL.GetDocumentImageData() is now deprecated
+- Change logic of GetDocumentData() to include image in print job.
+
+Version 2.3.1 (02/20/2015)
+- Remove optional commands <ESC>P$ and <ESC>P# in DocumentExPCL_PP class.
+
+Version 2.3.0 (02/20/2015)
+- Fix DocumentLP.advanceQueueMark() bug
+
+Version 2.2.9 (10/8/2014)
+- Revise logic to print Unicode characters for writeTextScalable.
+- Add PrinterStatus_DPL class for DPL printers
+- Revise PrinterOption class to provide more meaningful values for query values(enum)
+
+Version 2.2.8 (10/1/2014)
+- Add synchronous connection functionality to resolve the following issue related to (MTK chipset) devices:
+	The DataInputStream.available()/ read() hangs instead of returning right away when there are no data to be read
+
+Version 2.2.7 (9/23/2014)
+- Add sleep in close() function to prevent closing too early.
+- Fix bugs regarding SDP service discovery failure ( invoke createRfcommSocketToServiceRecord instead of calling directly).
+
+Version 2.2.6 (9/11/2014)
+- Add isBold property for ParameterEZ class
+
+Version 2.2.5 (8/11/2014)
+- Change logic of bitmap conversion to handle alpha channel
+
+Version 2.2.4 (8/5/2014)
+- Add PDF scaling based on printhead width of printer
+
+Version 2.2.3 (8/4/2014)
+- Add PDF printing support
+
+Version 2.2.2 (06/30/2014)
+- Fix bug for Avalanche Settings Query (EZ)
+- Fix bug for Battery Condition Query (EZ)
+- Change algorithm for printing images(ExPCL)
+
+Version 2.2.1 (05/06/2014)
+- Added support for ExPCL printing/querying (Apex Printers)
+
+Version 2.1.5.1 (04/08/2014)
+- Add incremental parameter for DocumentDPL
+- Fix some documentation errors.
+
+Version 2.1.5.0 (03/31/2014)
+- Add query functionalities for DPL Printers
+
+Version 2.1.0 (2013)
+- Added printing functionalities for DPL printers.
